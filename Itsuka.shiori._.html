@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itsuka Shiori</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+            /* Audio Button */
+        .audio-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+            width: 50px;
+            height: 50px;
+        }
+
+        .audio-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5; /* Snowy light background */
+            overflow-x: hidden;
+            box-sizing: border-box; /* Important for box sizing */
+        }
+
+        * {
+            box-sizing: inherit; /* Ensures all elements follow border-box sizing */
+        }
+
+        /* Snowflakes Styles */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 2em;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;  /* Full height of the viewport */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: url('1.jpg') no-repeat center center/cover; /* Add a Christmas background */
+        }
+
+        .hero-content {
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            max-width: 600px;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-explore {
+            padding: 10px 20px;
+            background: #ff4747; /* Red for Christmas */
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-explore:hover {
+            background: #fff;
+            color: #ff4747;
+        }
+
+        /* Cards Section */
+        .cards {
+            padding: 50px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-overlay h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+.swiper {
+    margin-top: 50px; /* Tambahkan margin untuk geser ke atas */
+    margin-bottom: 100px; /* Tambahkan jarak dari footer */
+}
+
+        .swiper-slide {
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .swiper-slide:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Footer Section */
+        footer {
+            background: #ff4747;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        footer form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        footer input[type="email"] {
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            width: 250px;
+            max-width: 100%;
+        }
+
+        footer button {
+            padding: 10px 20px;
+            background: #fff;
+            color: #ff4747;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        footer button:hover {
+            background: #ff4747;
+            color: #fff;
+        }
+        .social-media {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.social-media a {
+    color: #fff;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.social-media a:hover {
+    color: #ffeb3b; /* Warna kuning saat hover */
+}
+    </style>
+</head>
+<body>
+      <!-- Audio Button -->
+    <button class="audio-btn" id="audio-toggle">
+        <img src="2.jpg" alt="Play Icon" id="audio-icon"> <!-- Replace play-icon.png with your icon image -->
+    </button>
+
+    <!-- Audio Element -->
+    <audio id="background-audio" loop>
+        <source src="1.mp3" type="audio/mp3"> <!-- Replace christmas-audio.mp3 with your audio file -->
+    </audio>
+  <!-- Snowflakes HTML -->
+    <div class="snowflakes" aria-hidden="true"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+       <!-- Deskripsi Awal -->
+    <p style="text-align: center; font-size: 20px; font-weight: bold; margin-top: 20px; color: red;">
+        "Oke bro, dengerin baik-baik, ya! Jangan sampai gw ulang lagi:  
+        **INI WAIFU GW!**  
+        Kalau ada yang macem-macem, siap-siap gw kirim drone buat ngawasin aktivitas lu 24/7. <br>  
+        Kalau perlu, gw dateng langsung ke rumah bawa army waifu lain buat bantuin gw jelasin:  
+        **Shiori itu cuma milik gw, dan nggak ada opsi negosiasi!**"  
+    </p>
+    <p style="text-align: center; font-size: 18px; color: darkblue;">
+        *"Gw nggak peduli lu punya waifu siapa, Rem? Zero Two? Nezuko? Bebas!  
+        Tapi, kalau lu sentuh Shiori, kita langsung ketemu di turnamen adu suit online!"*
+    </p>
+    <p style="text-align: center; font-size: 16px; color: green;">
+        BTW, gw udah bikin kontrak eksklusif sama Shiori, kontraknya legal dan disahkan sama Notaris Anime Internasional!  
+        Jadi, gw nggak cuma ngomong doang. Ada bukti surat cinta dia yang bertanda tangan hologram Shiori! 
+        Gimana? Masih mau coba claim? Berani banget lu 😤.
+    </p>
+
+    <!-- Konten Halaman -->
+    <h1 style="text-align: center; margin-top: 50px;">Itsuka Shiori - pacar gw   eh waifu gw maksudnya maaf typo</h1>
+    <p style="text-align: center; font-size: 18px;">
+        "Selamat datang di halaman Itsuka Shiori - Waifu Tercinta Gw™."  
+        Ini adalah tempat suci buat para pecinta Date A Live (tapi lu cuma numpang liat doang).  
+        Mau lihat Shiori dengan outfit Natal? Silakan, tapi jangan lupa kalau ini cuma pinjeman visual. <br>  
+        Kalau masih niat macem-macem, ingat: <br> **1. GW GAK TAKUT. 2. LU YANG HARUS TAKUT.**
+    </p>
+
+    <p style="text-align: center; font-size: 18px; color: brown;">
+        Peringatan terakhir: Shiori udah daftar di **"Waifu Protection Program™"**!  
+        Gw juga udah kasih tau FBI Anime Division, jadi jangan coba-coba hack web ini!  
+        Intinya, santai aja bro... Respect waifu orang lain, dan mungkin lu bakal hidup lebih lama.  
+    </p>
+            <button class="btn-explore">Shiori</button>
+        </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="cards" data-aos="fade-up">
+        <div class="card" data-aos="fade-up">
+            <img src="1.jpg" alt="Shiori Christmas Image 1">
+            <div class="card-overlay">
+                <h3>Shiori's elegance shines even brighter during the festive season.</h3>
+            </div>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+            <img src="2.jpg" alt="Shiori Christmas Image 2">
+            <div class="card-overlay">
+                <h3>Join Shiori in celebrating the holidays with grace and beauty.</h3>
+            </div>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <img src="3.jpg" alt="Shiori Christmas Image 3">
+            <div class="card-overlay">
+                <h3>Experience Shiori's charm in this holiday collection.</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper Carousel -->
+    <div class="swiper mySwiper" data-aos="zoom-in">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="1.jpg" alt="Shiori Christmas Image 1">
+            </div>
+            <div class="swiper-slide">
+              <img src="2.jpg" alt="Shiori Christmas Image 2">
+            </div>
+            <div class="swiper-slide">
+                <img src="3.jpg" alt="Shiori Christmas Image 3">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+<div id="news-carousel" style="text-align: center; margin: 20px auto; position: relative; max-width: 800px;">
+    <img id="news-image" src="1.jpg" alt="News Image" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
+    <p id="news-caption" style="margin-top: 10px; font-size: 18px; color: #333;">Shiori looks stunning in her Christmas outfit!</p>
+</div>
+    <!-- Footer Section -->
+<footer>
+    <div class="footer-content">
+        <p>
+            &copy; 2024 <strong>Itsuka Shiori Fanpage</strong>. All Rights Reserved. 
+            Designed with <i class="fas fa-heart" style="color: red;"></i> by Fans of Date A Live.
+        </p>
+        <form>
+            <input type="email" placeholder="Subscribe to our Christmas newsletter" aria-label="Email Address">
+            <button type="submit">Subscribe</button>
+        </form>
+        <!-- Social Media Icons -->
+        <div class="social-media">
+            <a href="https://wa.me/6285156059733" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61567476067535" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/itsuka.shiori._?igsh=YzljYTk1ODg3Zg==" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/Kazukikazami03" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+        
+    </div>
+</footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+             // Handle Audio Toggle
+        const audio = document.getElementById("background-audio");
+        const audioIcon = document.getElementById("audio-icon");
+
+        document.getElementById("audio-toggle").addEventListener("click", function() {
+            if (audio.paused) {
+                audio.play();
+                audioIcon.src = "3.jpg"; // Replace with your pause icon
+            } else {
+                audio.pause();
+                audioIcon.src = "1.jpg"; // Replace with your play icon
+            }
+        });
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // Initialize Swiper for the carousel
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            slidesPerView: 'auto',  // Adjust the number of images per view
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+// Array of images and captions for the news carousel// Array of images and captions for the news carousel
+// Array gambar dan caption untuk carousel berita
+const newsImages = [
+    { src: "itsuka.jpg", caption: "Jangan-jangan claim Waifu gw 🤬" },
+    { src: "itsuka2.jpg", caption: "Lu nggak berhak claim Waifu gw! 😤" },
+    { src: "itsuka3.jpg", caption: "Waifu gw? Jangan harap bisa! 🤬" },
+    { src: "itsuka4.jpg", caption: "Lu kira bisa klaim? No way! 😤" },
+    { src: "itsuka5.jpg", caption: "Coba deh klaim Waifu gw, gw smash loh! 💥" },
+    { src: "itsuka6.jpg", caption: "Jangan deh, waifu gw bukan buat kamu! 😡" },
+    { src: "itsuka7.jpg", caption: "Klaim Waifu gw? Siap-siap aja kena masalah! 😤" },
+    { src: "itsuka8.jpg", caption: "Gue bilang jangan, jangan coba-coba klaim Waifu gw! 🤬" },
+    { src: "itsuka9.jpg", caption: "Coba aja klaim, nanti lo ngerasain! 😡" },
+    { src: "itsuka10.jpg", caption: "Waifu gw bukan untuk diperebutkan! 😤" },
+    { src: "itsuka11.jpg", caption: "Jangan ganggu waifu gw, nggak lucu loh! 🤬" },
+    { src: "itsuka12.jpg", caption: "Waifu gw? Cuma buat gue, jangan ganggu! 😡" },
+    { src: "itsuka13.jpg", caption: "Lu nggak bakal bisa klaim Waifu gw, jangan coba! 😤" },
+    { src: "itsuka14.jpg", caption: "Waifu gw tuh milik gue doang, jangan sentuh! 🤬" },
+    { src: "itsuka15.jpg", caption: "Siapa berani klaim Waifu gw, harus siap terima akibatnya! 😡" },
+    { src: "itsuka16.jpg", caption: "Klaim waifu gw? Jangan harap bisa! 🤬" },
+    { src: "itsuka17.jpg", caption: "Waifu gw nggak bisa sembarangan loh, stop deh! 😤" },
+    { src: "itsuka18.jpg", caption: "Jangan coba-coba deketin Waifu gw, ngerti?! 🤬" },
+    { src: "itsuka19.jpg", caption: "Jangan sampe klaim Waifu gw, lo bakal nyesel! 😡" },
+    { src: "itsuka20.jpg", caption: "Waifu gw bukan untuk klaim sembarangan! 😤" },
+    { src: "itsuka21.jpg", caption: "Lu pikir bisa klaim Waifu gw? Hahaha, gila!" },
+    { src: "itsuka22.jpg", caption: "Dilarang keras klaim Waifu gw! 🚫" },
+    { src: "itsuka23.jpg", caption: "Waifu gw bukan buat kamu, berhenti deh! 😡" },
+    { src: "itsuka24.jpg", caption: "Jangan deh klaim, nggak bakal bisa!" },
+    { src: "itsuka25.jpg", caption: "Gue udah bilang, jangan ganggu Waifu gw! 🤬" },
+    { src: "itsuka26.jpg", caption: "Waifu gw, bukan buat klaim sembarangan! 🚫" },
+    { src: "itsuka27.jpg", caption: "Jangan-jangan klaim? Hahaha, mimpilah!" },
+    { src: "itsuka28.jpg", caption: "Waifu gw? Punya gue doang, minggir sana! 🤬" },
+    { src: "itsuka29.jpg", caption: "Lu nggak boleh klaim Waifu gw, nggak bakal berhasil!" },
+    { src: "itsuka30.jpg", caption: "Gue serius, jangan coba-coba klaim Waifu gw! 😡" },
+    { src: "itsuka31.jpg", caption: "Waifu gw, nggak ada yang boleh klaim! 🤬" },
+    { src: "itsuka32.jpg", caption: "Jangan coba-coba, nggak ada yang bisa klaim Waifu gw!" },
+    { src: "itsuka33.jpg", caption: "Waifu gw, bukan buat kamu klaim! 😤" },
+    { src: "itsuka34.jpg", caption: "Klaim Waifu gw? Nggak bakal kejadian, pasti kalah!" },
+    { src: "itsuka35.jpg", caption: "Waifu gw? Jangan harap bisa deh! 🤬" },
+    { src: "itsuka36.jpg", caption: "Coba klaim, rasain akibatnya! 😤" },
+    { src: "itsuka37.jpg", caption: "Jangan ganggu Waifu gw, lo nggak punya hak!" },
+    { src: "itsuka38.jpg", caption: "Klaim Waifu gw? No way, nggak bakal berhasil!" },
+    { src: "itsuka39.jpg", caption: "Jangan coba klaim Waifu gw, nanti lo nyesel!" },
+    { src: "itsuka40.jpg", caption: "Waifu gw? Punya gue, nggak bisa klaim sembarangan!" },
+    { src: "itsuka41.jpg", caption: "Jangan ganggu Waifu gw, serius deh! 🤬" },
+    { src: "itsuka42.jpg", caption: "Klaim waifu gw? Jangan harap bisa deh!" },
+    { src: "itsuka43.jpg", caption: "Waifu gw, jangan coba-coba klaim, lo kalah!" },
+    { src: "itsuka44.jpg", caption: "Jangan ganggu, Waifu gw bukan buat lu!" },
+    { src: "itsuka45.jpg", caption: "Lu klaim waifu gw? Gak bakal ada yang terjadi!" },
+    { src: "itsuka46.jpg", caption: "Coba klaim Waifu gw, gue beneran marah loh! 🤬" }
+];
+
+
+let currentNewsIndex = 0;
+const newsImageElement = document.getElementById("news-image");
+const newsCaptionElement = document.getElementById("news-caption");
+
+function updateNewsCarousel() {
+    // Update image and caption
+    currentNewsIndex = (currentNewsIndex + 1) % newsImages.length;
+    newsImageElement.src = newsImages[currentNewsIndex].src;
+    newsCaptionElement.textContent = newsImages[currentNewsIndex].caption;
+}
+
+// Change news image every 5 seconds
+setInterval(updateNewsCarousel, 5000);
+        // Snowflakes animation function
+        function createSnowflakes() {
+            const snowflakes = document.querySelector('.snowflakes');
+            const numberOfSnowflakes = 50; // Number of snowflakes to generate
+
+            for (let i = 0; i < numberOfSnowflakes; i++) {
+                let snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄'; // Snowflake character
+                snowflake.style.left = `${Math.random() * 100}vw`;  // Random position on X-axis
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;  // Random animation duration
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;  // Random delay
+
+                snowflakes.appendChild(snowflake);
+            }
+        }
+
+        // Create snowflakes when the page loads
+        createSnowflakes();
+    </script>
+</body>
+</html>
