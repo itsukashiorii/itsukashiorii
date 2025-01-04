@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maou Gakuin Universe</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      background-image: url('Ror.jpeg'); /* Ganti dengan link gambar yang sesuai */
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      width: 250px;
+      background-color: rgba(58, 61, 66, 0.85);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-250px);
+    }
+
+    .sidebar h2 {
+      color: #ffd700;
+      margin-bottom: 30px;
+      font-size: 1.5em;
+    text-align: center;  
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .sidebar ul li a:hover {
+      color: #ffd700;
+    }
+
+    /* Main content styling */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      background-color: white;
+      background-color: rgba(255, 255, 255, 0.8);
+      overflow-y: auto;
+      margin-left: 250px;
+      transition: margin-left 0.3s ease, transform 0.3s ease;
+    }
+
+    .main-content.shifted {
+      margin-left: 0;
+      transform: translateX(0);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+footer {
+  background-color: rgba(0, 0, 0, 0.85);  /* Warna latar belakang footer */
+  color: white;                           /* Warna teks putih */
+  padding: 20px 0;                        /* Memberikan padding atas dan bawah */
+  text-align: center;                     /* Menyelaraskan teks ke tengah */
+  font-size: 1rem;                        /* Ukuran font lebih kecil */
+  border-top: 2px solid #ffd700;          /* Garis pembatas atas dengan warna emas */
+  margin-top: 20px;                       /* Menambahkan jarak atas */
+}
+
+footer p {
+  margin: 0;                              /* Menghapus margin di sekitar teks */
+  font-family: 'Arial', sans-serif;        /* Menyesuaikan font */
+}
+
+footer a {
+  color: #ffd700;                         /* Warna tautan emas */
+  text-decoration: none;                  /* Menghapus garis bawah pada tautan */
+}
+
+footer a:hover {
+  text-decoration: underline;             /* Menambahkan garis bawah saat hover */
+}
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+.media-container {
+  display: flex;
+  justify-content: center;  /* Menyusun video secara horizontal di tengah */
+  align-items: center;      /* Menyusun video secara vertikal di tengah */
+  flex-wrap: wrap;
+  height: 100%;             /* Pastikan kontainer memiliki tinggi 100% agar video bisa berada di tengah */
+}
+.media-container video {
+  margin: auto;
+}
+.media-container img {
+  width: 100%;            /* Membuat gambar mengikuti lebar kontainer */
+  max-width: 400px;       /* Membatasi lebar gambar agar tidak terlalu besar */
+  height: auto;           /* Memastikan rasio aspek tetap terjaga */
+  margin: 10px 0;         /* Memberikan jarak antara gambar */
+  border-radius: 8px;     /* Menambahkan sudut membulat pada gambar */
+}
+
+   /* Toggle button styling */
+    .toggle-btn {
+      font-size: 30px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      z-index: 1100;
+    }
+
+    /* Add transition for smoother tab changes */
+    .tab-content {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      opacity: 1;
+    }
+
+    .close-btn {
+      font-size: 20px;
+      color: white;
+      background: none;
+      border: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toggle button for sidebar -->
+  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Maou Gakuin</h2><hr><b><u>&bull;under development</u></b></hr>
+    <ul>
+      <li><a href="#" onclick="showTab('intro')">Beranda</a></li>
+      <li><a href="#" onclick="showTab('magic')">Sihir & Senjata</a></li>
+      <li><a href="#" onclick="showTab('characters')">Karakter</a></li>
+      <li><a href="#" onclick="showTab('history')">Sejarah Dunia</a></li>
+      <li><a href="#" onclick="showTab('worlds')">Dunia & Lokasi</a></li>
+      <li><a href="#" onclick="showTab('media')">Gambar & Video</a></li>
+      <li><a href="#" onclick="showTab('apalah')">apalah</a></li>
+            <li><a href="#" onclick="showTab('gi')">apalah</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <section id="intro" class="tab-content active">
+      <button class="close-btn" onclick="closeTab('intro')">×</button>
+      <h2>Selamat Datang di Dunia Maou Gakuin</h2>
+      <p>Jelajahi sejarah, karakter, dan kekuatan magis dari dunia epik ini.<hr><b><u>&bull;Subjek: Permohonan Izin Penggunaan Informasi dari Maou Gakuin Wiki</u></b></hr><hr><b><u>&bull;Kepada Tim Maou Gakuin Wiki,</u></b></hr>Perkenalkan, nama saya itsuka shiori, seorang penggemar berat anime <b>Maou Gakuin no Futekigosha.</b> Saya sangat mengagumi dunia dan karakter-karakter yang ada dalam anime ini. Sebagai bentuk penghargaan dan hiburan pribadi, saya sedang membuat beberapa konten yang terinspirasi dari informasi yang ada di Maou Gakuin Wiki. Konten ini bersifat non-komersial dan hanya untuk hiburan diri saya sendiri.</p><p>Dengan ini, saya ingin memohon izin untuk menggunakan informasi yang ada di Maou Gakuin Wiki sebagai referensi untuk konten yang saya buat. Saya berkomitmen untuk mencantumkan sumber yang jelas dari Maou Gakuin Wiki dalam setiap karya saya dan memastikan bahwa karya tersebut tidak melanggar hak cipta atau digunakan untuk tujuan komersial</p>
+      <p>Saya sangat menghargai dedikasi tim Maou Gakuin Wiki dalam menyediakan informasi yang mendalam dan berkualitas tentang anime ini. Semoga tim berkenan memberikan izin untuk penggunaan informasi ini. Jika ada persyaratan atau ketentuan lain, saya akan dengan senang hati mengikuti.</p>
+      <p>Terima kasih atas perhatian dan waktu Anda.
+
+<p>Hormat saya,</p>
+<p>itsuka shiori</p>
+<p>somethingjust30@gmail.com</p>
+</p>
+    </section>
+
+    <section id="magic" class="tab-content">
+      <button class="close-btn" onclick="closeTab('magic')">×</button>
+      <h2>Sihir dan Senjata</h2>
+      <div class="content">
+        <div class="card">
+          <h3>Venuzdonoa</h3>
+          <p>Pedang legendaris yang digunakan oleh Anos Voldigoad. Dibuat dari material sihir murni yang mampu menghancurkan realitas itu sendiri.</p>
+        </div>
+        <div class="card">
+          <h3>Jio Graze</h3>
+          <p>Sihir penghancur masif yang dapat merusak dimensi dan realitas.</p>
+        </div>
+        <div class="card">
+          <h3>Reincarnation Magic</h3>
+          <p>Memungkinkan Anos untuk bereinkarnasi tanpa kehilangan ingatan dan kekuatannya.</p>
+        </div>
+                <div class="card">
+          <h3>ketentuan</h3>
+          <p><b><u>Sihir Asal (起源魔法Kigen Mahō ? ) :</u></b> Sihir asal meminjam kekuatan dari keberadaan yang lebih tua dan lebih kuat. Semakin tua keberadaannya, semakin besar kekuatannya. Namun, semakin tua keberadaannya, semakin tidak pasti keberadaannya, yang membuat kekuatannya sulit dikendalikan. Jadi, cara terbaik untuk menggunakan sihir asal adalah dengan mengetahui dengan jelas keberadaan orang yang meminjam kekuatan dari atau dari objek yang memiliki afinitas dengannya. Karena sifatnya yang meminjam kekuatan dari asal, sihir asal tidak dapat memengaruhi asal itu sendiri. Meskipun dikenal luas di Zaman Mitos, di Zaman Sihir, pengetahuan dan penggunaannya eksklusif untuk bangsawan iblis. Sihir asal dikembangkan oleh Anos Voldigoad . [1]
+CyfioS1E11
+Lingkaran Sihir Suci.
+
+<b><u>Holy Magic (聖なる魔法 Seinaru Mahō?):</u></b> 
+Holy magic is a term used by humans and gods to refer to a certain wavelength of magic. Humans mostly use it, as it possesses unique characteristics that make it very effective against demons, such as inflicting greater damage to them or sealing their power. While it is initially assumed that only humans can use holy magic, it is shown that if a demon possesses a high level of magic knowledge, they can use holy magic to a degree.[2] Certain unique demon swords, such as Siegsesta, the Sword of Intent, are also capable of using holy magic.[3] Mixed-blooded demons also have an easier time adapting to using holy magic.[4]
+Lingkaran Sihir Roh
+Lingkaran Sihir Roh.
+
+<b><u>Sihir Roh (精霊魔法Seirei Mahō ? ) :</u></b> 
+Sihir roh adalah bentuk sihir yang hanya dapat digunakan oleh roh . Setiap roh memiliki bentuk sihir unik yang mereka gunakan karena rumor dan legenda yang memberi mereka berbagai kemampuan. Tidak seperti iblis atau manusia, roh benar-benar mengonsumsi sebagian dari sumber mereka saat menggunakan sihir unik mereka. Namun, bagian sumber yang hilang dapat dengan mudah dipulihkan jika rumor dan tradisi yang membentuk keberadaan roh masih ada. Sementara sebagian besar roh terbatas pada segelintir mantra sihir unik, terbukti bahwa Roh Agung yang unik, seperti Roh Ibu Agung Reno , dapat memanfaatkan semua jenis sihir roh.
+Lingkaran Sihir Kuno
+Lingkaran Sihir Kuno.
+
+<b><u>Sihir Kuno (古代魔法Kodai Mahō ? ) :</u></b> 
+Rune kuno adalah rune yang digunakan pada zaman kuno dan dianggap kuno bahkan di Zaman Mitos. Hanya sedikit orang yang mempelajarinya, dan mereka yang bisa menggunakannya bahkan lebih langka. Rune kuno dapat memperkuat sejumlah kecil kekuatan sihir, tetapi setiap formula mantra memiliki batas kekuatan yang dapat ditariknya. Efisiensi rune kuno dalam memperkuat sihir sebenarnya menurunkan batasnya. Anos menduga bahwa inilah sebabnya nenek moyang ras iblis meninggalkan rune kuno dan mengembangkan rune yang digunakan saat ini. [5]
+Lingkaran Ajaib Fonetik
+Lingkaran Ajaib Fonetik.
+
+<b><u>Lingkaran Sihir Fonetik (音韻魔法陣On'in Mahō-jin ? ) :</u></b>  Lingkaran sihir yang menggunakan nada, volume, dan ritme. Mantra tidak akan aktif kecuali melodi lengkap dimainkan. [6]</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="characters" class="tab-content">
+      <button class="close-btn" onclick="closeTab('characters')">×</button>
+      <h2>Karakter Utama</h2>
+      <div class="content">
+        <div class="card">
+          <h3>Anos Voldigoad</h3>
+          <p>Raja Iblis legendaris dengan kekuatan luar biasa yang menciptakan perdamaian dunia.</p>
+        </div>
+        <div class="card">
+          <h3>Sasha Necron</h3>
+          <p>Penyihir kehancuran yang sangat setia kepada Anos.</p>
+        </div>
+        <div class="card">
+          <h3>Misha Necron</h3>
+          <p>Saudara kembar Sasha yang ahli dalam sihir es.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="history" class="tab-content">
+      <button class="close-btn" onclick="closeTab('history')">×</button>
+      <h2>Sejarah Dunia</h2>
+      <div class="content">
+        <div class="card">
+          <h3>Konflik 2000 Tahun Lalu</h3>
+          <p>2000 tahun lalu, Anos menciptakan perdamaian dengan memisahkan dunia manusia, iblis, roh, dan dewa.</p>
+        </div>
+        <div class="card">
+          <h3>Abernyu</h3>
+          <p>Abernyu (アベルニユーAberuniyū ? ) adalah Dewi Kehancuran (破壊神Hakai-Shin ? ) dan orang yang bertanggung jawab atas semua kehancuran yang ada di dunia.
+          
+          <b><u>kepribadian</u></b>
+          <b>sejarah</b>
+          Lebih dari dua ribu tahun yang lalu, Abernyu adalah dewa yang menjaga ketertiban kehancuran. Karena Perang Besar , banyak manusia dan iblis mati sementara roh-roh menghilang. Akibatnya, Raja Iblis Tirani Anos Voldigoad berusaha mengubah ketertiban dunia yang putus asa ini. Ketika Abernyu jatuh ke dunia, Anos membunuhnya dan mengubahnya menjadi Kastil Iblis Delsgade . Meskipun dewa-dewa lain mencoba untuk mengganti kerugiannya, ketertiban yang lengkap tidak pernah dapat dipulihkan, sehingga menjadi lebih mudah bagi seseorang untuk mengelabui kematian.
+          <b><u>kemampuan</u></b>
+          <hr><b><u>&bull;Kekuatan Sihir yang Luar Biasa</u></b></p></hr> : Sebagai dewa, dia memiliki kekuatan sihir yang luar biasa, memiliki kumpulan sihir yang hampir tak terbatas yang hanya dapat digunakan saat melakukan sesuatu yang luar biasa besarnya.<hr><b><u>&bull;Keberadaan Konseptual:</u></b></hr>Para Dewa memelihara dan mewujudkan ketertiban dan hukum dunia. [1]<hr><b><u>&bull;Sarjieldenav, Matahari Kehancuran :Matahari Kehancuran bersinar di langit
+Matahari Kehancuran</u></b></hr>Ordo Abernyu, yang berbentuk matahari hitam besar. Sarjieldenav adalah salah satu ordo terpenting di dunia karena bertanggung jawab atas kehancuran terus-menerus di seluruh dunia, termasuk kehancuran makhluk hidup seperti iblis, manusia, roh, dan terkadang bahkan dewa. Periode waktu ketika Matahari Kehancuran aktif disebut Bulan Kehancuran, di mana kehidupan lama dihancurkan untuk memberi jalan bagi kehidupan baru yang akan diciptakan oleh Bulan Penciptaan. Melalui keajaiban Sarjieldenav, tatanan dunia dipertahankan dengan cara mendaur ulang kehidupan yang telah hilang. Matahari Kehancuran memungkinkan penggunanya untuk mengendalikan sinar matahari khusus, serta menghancurkan semua yang ada, dari materi fisik dan makhluk hidup hingga hukum abstrak alam semesta. Ketika ordo tersebut berubah menjadi Venuzdonoa, dan tubuh Abernyu berubah menjadi Delsgade, ordo kehancuran tidak lagi dapat membunuh dan menghancurkan hal-hal yang seharusnya dihancurkan, sehingga mantra kebangkitan seperti Ingall dan Agronemt dapat bekerja dengan lebih berhasil. [1]<hr><b><u>&bull;Sinar Matahari Hitam :Cahaya Kehancuran bersinar di Midhaze
+Sinar Matahari Hitam</u></b></hr>Sarjieldenav memancarkan sinar matahari hitam yang unik, yang merupakan manifestasi dari kekuatan ilahi Sarjieldenav. Cahaya yang dipancarkan dari Sarjieldenav menyebabkan kehancuran total dari apa pun yang disinarinya, seperti yang dinyatakan bahwa Matahari Kehancuran memiliki kekuatan untuk mengakhiri semua kehidupan fana jika bersinar dengan potensi penuh. [2] Sarjieldenav juga menciptakan aura kehancuran yang luas dan sangat besar di sekitarnya yang akan mencegah siapa pun mendekati Matahari Kehancuran atau berisiko dihancurkan sepenuhnya. Cahaya hitam yang dipancarkan oleh Matahari Kehancuran juga memperkuat Penjaga Kehancuran , meningkatkan kekuatan mereka dengan tingkat yang besar. [3]</p>
+        </div>
+        <div class="card">
+          <h3><b>Milisi (ミリティアMiritia ? ) adalah Dewi Penciptaan (創造神Sōzō-Shin ? ) ,</b></h3>
+          <p>Dewi kedamaian yang berusaha melindungi dunia dari kerusakan besar.
+          <hr><b><u>&bull;penampilan</u></b></hr>Dalam anime dan manga, Militia memiliki penampilan seorang wanita muda dengan tubuh langsing, rambut panjang yang mencapai pinggang, dan mata biru.<hr><b><u>&bull;kepribadian</u></b></hr>Militia digambarkan sebagai dewi yang baik hati dan penyayang yang menciptakan dunia yang penuh cinta dan harapan. Tidak seperti kebanyakan dewa lainnya yang hanya mematuhi perintah mereka sendiri dan tidak peduli dengan spesies manusia dan bagaimana tindakan para dewa memengaruhi mereka. Meskipun telah melakukan yang terbaik untuk menciptakan dunia yang penuh dengan kebaikan, dia menyesalkan bahwa dunia tersebut dipenuhi dengan konflik dan pertikaian, karena dia berharap akan ada cara untuk mengubahnya dan membawa kedamaian serta harapan bagi orang-orang yang tinggal di dalamnya.<hr><b><u>&bull;Dewi Militia (Melheis Boran) adalah salah satu karakter penting dalam Maou Gakuin no Futekigosha. Ia adalah salah satu dari Seven Elder Demon Emperors yang diciptakan oleh Raja Iblis Anos Voldigoad untuk menjaga keseimbangan dunia. Berikut adalah beberapa informasi utama tentang Dewi Militia:</u></b></hr>1. Peran dan Tugas
+
+Militia bertugas untuk menjaga dunia dan memastikan perintah Anos tetap dihormati, bahkan setelah reinkarnasi Anos.
+
+Sebagai salah satu dari Elder Demon Emperors, ia memiliki kekuatan besar dan setia kepada Anos.
+
+
+<b><u>2. Kepribadian</u></b>
+
+Dewi Militia adalah sosok yang bijaksana dan setia. Ia selalu mendukung keputusan Anos dan menjalankan perintahnya dengan penuh dedikasi.
+
+Ia menunjukkan rasa hormat dan kekaguman yang mendalam kepada Anos.
+
+
+<b><u>3. Kekuatan dan Kemampuan</u></b>
+
+Militia memiliki kekuatan sihir tingkat tinggi, termasuk kemampuan untuk memanipulasi sihir dengan presisi.
+
+Sebagai bagian dari Seven Elder Demon Emperors, ia memiliki keabadian dan perlindungan yang luar biasa dari kekuatan Anos.
+
+
+<b><u>4. Hubungan dengan Anos</u></b>
+
+Ia sangat loyal kepada Anos dan menganggapnya sebagai pemimpin sejati. Loyalitasnya tidak pernah tergoyahkan, bahkan saat menghadapi ancaman dari pihak lain.
+
+Dalam cerita, ia memiliki peran penting dalam membantu Anos melawan musuh-musuhnya.
+
+
+<b><u>5. Penampilan</u></b>
+
+Militia digambarkan sebagai individu dengan penampilan anggun dan elegan, menunjukkan keagungan seorang pengikut Raja Iblis.
+
+Desain karakternya mencerminkan kekuatan dan kedewasaan, sesuai dengan posisinya sebagai Elder Demon Emperor.
+<b>Baik! Berikut adalah artikel berdasarkan anime Maou Gakuin no Futekigousha dengan fokus pada peran dan informasi dari Militia dalam konteks cerita animenya.
+
+
+---
+
+<b><u>Dewi Militia di Anime Maou Gakuin no Futekigousha</u></b>
+
+Dalam Maou Gakuin no Futekigousha, Militia adalah salah satu dari Seven Elder Demon Emperors yang diciptakan oleh Raja Iblis Anos Voldigoad. Ia memiliki peran penting dalam melindungi dunia iblis setelah Anos memilih untuk bereinkarnasi demi membawa perdamaian.
+
+<b><u>Peran dalam Cerita Anime</u></b>
+
+Dewi Militia diperkenalkan sebagai bagian dari struktur kekuatan di dunia iblis yang didirikan oleh Anos. Sebagai salah satu Elder Demon Emperors, tugas utamanya adalah menjaga peraturan yang ditetapkan Anos. Namun, ketika Anos kembali setelah 2000 tahun, ia menemukan bahwa banyak hal telah berubah, termasuk loyalitas beberapa dari Seven Elder Demon Emperors.
+
+Dalam anime, Militia sendiri tidak mendapatkan terlalu banyak sorotan seperti beberapa Elder lainnya, seperti Ivis Necron. Namun, keberadaan Militia tetap menjadi bagian penting dari sistem kekuasaan yang dibangun oleh Anos.
+
+<b><u>Karakteristik Militia</u></b>
+
+Karakteristik Militia tidak dijelaskan secara mendalam di anime, namun seperti Elder Demon Emperors lainnya, ia:
+
+<b><u>1. Setia kepada Anos: Meskipun ada Elder yang dirasuki dan dikhianati, kesetiaan awal mereka pada Anos adalah fondasi kekuatan dunia iblis.
+
+
+<b><u>2. Memiliki Kekuatan Luar Biasa:</u></b> Sebagai bagian dari Seven Elder Demon Emperors, Militia adalah entitas yang sangat kuat dan memiliki kemampuan sihir yang mendukung kestabilan dunia.
+
+
+
+<b><u>Pengaruh Anos Terhadap Elder Demon Emperors</u></b>
+
+Anime menunjukkan bagaimana Anos selalu menjaga hubungan dengan Elder Demon Emperors-nya. Setelah mengetahui adanya pengkhianatan dan manipulasi oleh "Raja Iblis Tiruan" Avos Dilhevia, Anos dengan tegas mengembalikan tatanan semula, termasuk memulihkan ingatan dan loyalitas para Elder.
+
+
+---
+
+Kesimpulan:
+Meskipun peran Militia dalam anime mungkin tidak sebesar karakter seperti Ivis atau Sasha Necron, ia tetap menjadi bagian dari dunia yang Anos ciptakan. Perannya sebagai salah satu Elder Demon Emperors adalah simbol kepercayaan dan kekuatan Anos Voldigoad sebagai Raja Iblis yang sejati.</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="worlds" class="tab-content">
+      <button class="close-btn" onclick="closeTab('worlds')">×</button>
+      <h2>Dunia & Lokasi</h2>
+      <div class="content">
+        <div class="card">
+          <h3>Azeshion</h3>
+          <p>Azeshion adalah ibu kota dunia iblis, penuh dengan keindahan arsitektur dan kekuatan magis yang besar.</p>
+        </div>
+        <div class="card">
+          <h3>Spirit Forest</h3>
+          <p>Hutan magis yang dihuni oleh roh dan makhluk mistis. Tempat ini memiliki aura kehidupan yang kuat.</p>
+        </div>
+        <div class="card">
+          <h3>Aharthern</h3>
+          <p>Dua ribu tahun yang lalu, Anos dan Pasukan Raja Iblisnya menyerbu Aharthern dengan tujuan bertemu dengan Roh Agung Reno . Setelah mengalahkan penjaganya, Roh Air Agung Lignon , pasukan iblis membakar seluruh hutan untuk menariknya keluar. Namun, Pahlawan Kanon menghalangi jalan mereka. [2]
+
+Sebelum Anos mengorbankan dirinya untuk mengusir Beno Ievun dan memisahkan keempat alam, Bapa Surgawi Nosgalia bersembunyi di Hutan Roh Agung bersama guen , karena ia bermaksud menyergap Reno dan membuatnya melahirkan Anak Tuhan . Beberapa waktu kemudian, Melheis Boran yang amnesia menemukan dirinya di Aharthern, mungkin mencoba melarikan diri dari siapa pun yang menghapus ingatannya.
+
+<b>
+  Rumor - Aharthern adalah roh yang terbentuk dari rumor hutan misterius tempat tinggal Roh Agung, sehingga ia hidup dan terus bergerak. Hutan tersebut sulit ditemukan karena keberadaan dan pintu masuknya selalu berubah, sebagaimana ditentukan oleh rumor terkini. Ia muncul dan menghilang dalam kabut tebal, dan seseorang tidak dapat menggunakan Mata Sihir mereka untuk menemukannya karena Aharthern tidak memiliki kekuatan sihir. [3]
+
+Mythical Age : Kabut muncul di tepi danau suci pada malam bulan purnama di musim semi. Melempar Lolly Danau Suci ke dalam kabut akan memancing peri-peri lucu yang bisa menuntun Anda ke dalam hutan. [3]
+Magical Age : Peri-peri yang suka bermain bersembunyi di kabut misterius yang muncul di Dataran Lysaris selama gerhana matahari. Membuat mereka tertawa akan memancing mereka keluar, dan mereka akan menuntunmu ke Aharthern. [4]
+</b></p>
+        </div>
+        <div class="card">
+          <h3>Delsgale</h3>
+          <p>Delsgade adalah lingkaran sihir tiga dimensi raksasa, jadi bahkan setelah dua ribu tahun, lingkaran itu tetap tidak berubah. Ada sihir khusus di intinya yang memungkinkannya beregenerasi secara otomatis, bahkan ketika komponen terpentingnya hancur. [1]
+
+Sejarah
+Dua ribu tahun yang lalu, Anos membunuh Dewi Kehancuran Abernyu dan mengubah tubuhnya menjadi Delsgade, pusat kekuasaan resmi Dilhade. Menjelang akhir Perang Besar , Anos mengundang Pahlawan Kanon , Roh Agung Reno , dan Dewi Penciptaan Milisi ke kastilnya dengan tujuan mengakhiri perang. Mereka menggabungkan kekuatan mereka dan kekuatan Delsgade untuk melemparkan Beno Ievun , tembok ajaib besar yang membagi keempat ras ke wilayah masing-masing</p>
+        </div>
+      </div>
+    </section>
+
+<section id="media" class="tab-content">
+  <button class="close-btn" onclick="closeTab('media')">×</button>
+  <h2>Gambar & Video</h2>
+  <div class="media-container">
+    <img src="Ror.jpeg" alt="Anos Image">
+    <img src="Ror.jpeg" alt="Sasha Image">
+    <video class="plyr" playsinline controls poster="thumbnail.jpg">
+      <source src="1.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <video class="plyr" playsinline controls poster="Ror.jpeg">
+      <source src="1.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</section>
+        <section id="apalah" class="tab-content">
+      <button class="close-btn" onclick="closeTab('characters')">×</button>
+      <h2>Karakter Utama</h2>
+      <div class="content">
+        <div class="card">
+          <h3>Anos Voldigoad</h3>
+          <p>Raja Iblis legendaris dengan kekuatan luar biasa yang menciptakan perdamaian dunia.</p>
+        </div>
+        <div class="card">
+          <h3>Sasha Necron</h3>
+          <p>Penyihir kehancuran yang sangat setia kepada Anos.</p>
+        </div>
+        <div class="card">
+          <h3>Misha Necron</h3>
+          <p>Saudara kembar Sasha yang ahli dalam sihir es.</p>
+        </div>
+      </div>
+    </section>
+   <section id="gi" class="tab-content">
+  <button class="close-btn" onclick="closeTab('media')">×</button>
+  
+  <!-- Footer in tab -->
+<footer>
+  <p>Maou Gakuin Universe © 2025 - Semua Hak Dilindungi</p>
+  <p>
+    <a href="privacy-policy.html">Kebijakan Privasi</a> | 
+    <a href="terms-and-conditions.html">Syarat & Ketentuan</a>
+  </p>
+  <p>Ikuti Kami:
+    <a href="https://facebook.com" target="_blank">Facebook</a> | 
+    <a href="https://twitter.com" target="_blank">Twitter</a> | 
+    <a href="https://instagram.com" target="_blank">Instagram</a>
+  </p>
+</footer>
+  </div>
+
+
+
+  <!-- Audio untuk klik -->
+  <audio id="click-sound" src="kurumi.mp3" preload="auto"></audio>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const players = Plyr.setup('.plyr');
+  });
+    function playClickSound() {
+      const audio = document.getElementById('click-sound');
+      audio.currentTime = 0; // Restart the sound to play it immediately
+      audio.play();
+    }
+
+    function showTab(tabId) {
+      // Memainkan suara klik
+      playClickSound();
+
+      // Menyembunyikan semua konten tab
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      // Menampilkan konten tab yang dipilih
+      const activeTab = document.getElementById(tabId);
+      activeTab.classList.add('active');
+    }
+
+    function toggleSidebar() {
+      // Memainkan suara klik
+      playClickSound();
+
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
+      
+      sidebar.classList.toggle('hidden');
+      mainContent.classList.toggle('shifted');
+    }
+
+    function closeTab(tabId) {
+      // Memainkan suara klik
+      playClickSound();
+
+      // Menyembunyikan tab
+      const tab = document.getElementById(tabId);
+      tab.classList.remove('active');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const players = Plyr.setup('.plyr');
+    });
+    showTab('intro');
+  </script>
+</body>
+</html>
